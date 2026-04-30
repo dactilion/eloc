@@ -6,13 +6,14 @@ import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
 import AuthPage from './pages/AuthPage';
 import { getReservations, getSession, getTrips, getUsers, saveReservations, saveSession, saveTrips, saveUsers, clearSession } from './storage';
+import { mockTrips } from './data';
 
 const normalizeTripDate = (trip) => trip.date || (typeof trip.when === 'string' && /\d{4}-\d{2}-\d{2}/.test(trip.when) ? trip.when.slice(0,10) : '');
 
 export default function App() {
   const [session, setSession] = useState(getSession());
   const [users, setUsers] = useState(getUsers());
-  const [trips, setTrips] = useState(getTrips());
+  const [trips, setTrips] = useState(() => { const existing = getTrips(); if (existing.length) return existing; const today = new Date().toISOString().slice(0,10); const seeded = mockTrips.map((t, i) => ({ ...t, id: `seed-${t.id}`, date: today, ownerEmail: `seed-driver-${i}@eloc.ro`, when: `${today} ${t.time}` })); saveTrips(seeded); return seeded; });
   const [reservations, setReservations] = useState(getReservations());
 
   const onLogin = (email, password) => { const user = users.find((u) => u.email === email && u.password === password); if (!user) return false; const s = { email: user.email, name: user.name, phone: user.phone }; setSession(s); saveSession(s); return true; };
