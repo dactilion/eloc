@@ -1,0 +1,164 @@
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-soft: #f8faff;
+  --primary: #3d6bff;
+  --primary-soft: #e8eeff;
+  --text: #1f2a44;
+  --muted: #6c7892;
+  --success: #17976b;
+  --warning: #e08b24;
+  --danger: #dd4d4d;
+  --radius: 16px;
+  --shadow: 0 8px 24px rgba(41, 59, 128, 0.08);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 25%);
+  color: var(--text);
+}
+
+#app {
+  min-height: 100vh;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 16px 16px 88px;
+}
+
+.header {
+  margin-bottom: 18px;
+}
+.header h1 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+}
+.header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.grid-quick {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px;
+}
+
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.quick-btn {
+  border: 0;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 14px;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.quick-btn strong { display: block; }
+.quick-btn span { color: var(--muted); font-size: 0.9rem; }
+.quick-btn.active { outline: 2px solid var(--primary); background: var(--primary-soft); }
+
+.form-grid { display: grid; gap: 10px; }
+label { display: grid; gap: 6px; font-size: 0.9rem; color: var(--muted); }
+input, select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #d6deef;
+  padding: 12px;
+  background: #fff;
+  color: var(--text);
+}
+input:focus, select:focus { outline: 2px solid #d5e0ff; border-color: var(--primary); }
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.btn {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modes { display: grid; gap: 8px; }
+.mode-pill {
+  border: 1px solid #d6deef;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  background: #fff;
+}
+.mode-pill input { width: auto; margin-right: 8px; }
+
+.meta { color: var(--muted); font-size: 0.87rem; }
+.status { font-size: 0.78rem; border-radius: 999px; padding: 3px 9px; background: var(--primary-soft); color: var(--primary); }
+.status.success { background: #d9f5ec; color: var(--success); }
+.status.warning { background: #fff1de; color: var(--warning); }
+
+.list { display: grid; gap: 10px; }
+.trip-card h3, .chat-item h3 { margin: 0 0 8px; font-size: 1rem; }
+.trip-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: .88rem; }
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #e5ecff;
+}
+.nav-btn {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 4px;
+  border-radius: 10px;
+}
+.nav-btn.active { color: var(--primary); background: var(--primary-soft); }
+
+.empty { text-align: center; color: var(--muted); padding: 18px; background: var(--surface-soft); border-radius: 12px; }
+.error { color: var(--danger); font-size: .82rem; }
+.profile {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+.action-row { display: grid; gap: 8px; margin-top: 12px; }
+.subtle-btn { background: #fff; color: var(--text); border: 1px solid #d6deef; }
+
+@media (min-width: 768px) {
+  #app { padding-top: 24px; }
+  .grid-quick { grid-template-columns: repeat(3, 1fr); }
+  .form-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid .full { grid-column: 1 / -1; }
+  .bottom-nav { left: 50%; transform: translateX(-50%); max-width: 880px; border-radius: 14px 14px 0 0; }
+}
