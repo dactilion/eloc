@@ -66,5 +66,41 @@ function PublishPanel({ onPublishTrip, session }) {
 function TripsList({ trips, reservedMap, onReserveTrip, onReserveCourier, onCancelReservation, hidePassengerActions = false, selectedDate }) {
   if (selectedDate && !trips.length) return <div className="empty">Nu există curse disponibile pentru data selectată.</div>;
   if (!selectedDate && !trips.length) return <div className="empty">Nu există curse disponibile momentan.</div>;
-  return <div className="list">{trips.map((t) => { const res = reservedMap.get(t.id); const full = t.seats <= 0; const maxAllowed = Math.min(4, t.seats || 0); return <article key={t.id} className="card trip-card"><h3>{t.route}</h3><div className="trip-meta"><span>Șofer: {t.driver}</span><span>Plecare: {t.time}</span></div><div className="trip-meta"><span>Preț: {t.price}</span><span>{full ? 'Cursă plină' : `Locuri: ${t.seats}`}</span></div>{(t.mode === 'parcel-only' || t.mode === 'mixed') && !!t.parcelSize && <p className="meta">📦 {t.parcelSize}</p>}{<div className="action-row">{!hidePassengerActions && !res && !full && <div className="row-2"><select id={`p-${t.id}`} defaultValue="1">{Array.from({ length: maxAllowed }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} pasager{i === 0 ? '' : 'i'}</option>)}</select><button className="btn reserve-btn" onClick={() => onReserveTrip(t.id, Number(document.getElementById(`p-${t.id}`).value || 1))}>Rezervă cursa</button></div>}{!hidePassengerActions && res && <button className="btn subtle-btn" onClick={() => onCancelReservation(t.id, 'passenger')}>Anulează rezervarea</button>}{!hidePassengerActions && !res && full && <button className="btn subtle-btn" disabled>Cursă plină</button>}{hidePassengerActions && !res && <button className="btn reserve-btn" onClick={() => onReserveCourier(t.id)}>Rezervă transport colet</button>}{hidePassengerActions && res && <button className="btn subtle-btn" onClick={() => onCancelReservation(t.id, 'courier')}>Anulează rezervarea</button>}</div></article>; })}</div>;
+
+  return (
+    <div className="list">
+      {trips.map((t) => {
+        const res = reservedMap.get(t.id);
+        const full = t.seats <= 0;
+        const maxAllowed = Math.min(4, t.seats || 0);
+
+        return (
+          <article key={t.id} className="card trip-card">
+            <h3>{t.route}</h3>
+            <div className="trip-meta"><span>Șofer: {t.driver}</span><span>Plecare: {t.time}</span></div>
+            <div className="trip-meta"><span>Preț: {t.price}</span><span>{full ? 'Cursă plină' : `Locuri: ${t.seats}`}</span></div>
+            {(t.mode === 'parcel-only' || t.mode === 'mixed') && !!t.parcelSize && <p className="meta">📦 {t.parcelSize}</p>}
+
+            <div className="action-row">
+              {!hidePassengerActions && !res && !full && (
+                <div className="row-2">
+                  <select id={`p-${t.id}`} defaultValue="1">
+                    {Array.from({ length: maxAllowed }, (_, i) => i + 1).map((n) => (
+                      <option key={n} value={n}>{n} pasager{i === 0 ? '' : 'i'}</option>
+                    ))}
+                  </select>
+                  <button className="btn reserve-btn" onClick={() => onReserveTrip(t.id, Number(document.getElementById(`p-${t.id}`).value || 1))}>Rezervă cursa</button>
+                </div>
+              )}
+
+              {!hidePassengerActions && res && <button className="btn subtle-btn" onClick={() => onCancelReservation(t.id, 'passenger')}>Anulează rezervarea</button>}
+              {!hidePassengerActions && !res && full && <button className="btn subtle-btn" disabled>Cursă plină</button>}
+              {hidePassengerActions && !res && <button className="btn reserve-btn" onClick={() => onReserveCourier(t.id)}>Rezervă transport colet</button>}
+              {hidePassengerActions && res && <button className="btn subtle-btn" onClick={() => onCancelReservation(t.id, 'courier')}>Anulează rezervarea</button>}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  );
 }
