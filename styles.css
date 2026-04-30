@@ -165,3 +165,6 @@ input:focus, select:focus { outline: 2px solid #d5e0ff; border-color: var(--prim
 
 .reserve-btn { background: #17976b; }
 .reserve-btn:hover { filter: brightness(0.96); }
+
+.modal-backdrop { position: fixed; inset: 0; background: rgba(22,30,55,0.45); display: grid; place-items: center; z-index: 120; padding: 16px; }
+.modal-content { width: 100%; max-width: 720px; max-height: 90vh; overflow: auto; border-radius: 16px; }
