@@ -1,3 +1,4 @@
+import React from 'react';
 const chats = [
   { name: 'Mara (șofer)', message: 'Ne vedem la 08:20, lângă gară.' },
   { name: 'Radu (colet)', message: 'Coletul este pregătit, mulțumesc!' }

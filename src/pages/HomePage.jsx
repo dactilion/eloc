@@ -1,3 +1,4 @@
+import React from 'react';
 const quickCards = [
   { id: 'search', title: 'Caută cursă', desc: 'Găsește rapid un loc disponibil.' },
   { id: 'publish', title: 'Publică cursă', desc: 'Adaugă o cursă în câteva secunde.' },

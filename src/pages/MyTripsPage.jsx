@@ -1,3 +1,4 @@
+import React from 'react';
 const sections = [
   { title: 'Ca șofer', items: ['Cluj → Brașov • 02 mai • 3 locuri'] },
   { title: 'Ca pasager', items: ['București → Iași • 10 mai • 120 RON'] },
