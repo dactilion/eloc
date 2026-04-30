@@ -23,6 +23,15 @@ const matchesRoute = (route, from, to) => {
   return (!from || fromCity.includes(norm(from))) && (!to || toCity.includes(norm(to)));
 };
 
+const applyLocationFilter = (route, from, to) => {
+  const f = norm(from);
+  const d = norm(to);
+  const useFrom = f.length >= 2;
+  const useTo = d.length >= 2;
+  if (!useFrom && !useTo) return true;
+  return matchesRoute(route, useFrom ? f : '', useTo ? d : '');
+};
+
 export default function HomePage({ trips, onPublishTrip, session, onReserveTrip, onReserveCourier, onCancelReservation, myReservations, myCourierReservations }) {
   const [panel, setPanel] = useState('cauta');
   return <><header className="header"><h1>Bine ai venit, {session.name}</h1><p>E loc, folosește-l.</p></header><section className="grid-quick">{quickCards.map((card) => <button key={card.id} className={`quick-btn ${panel === card.id ? 'active' : ''}`} onClick={() => setPanel(card.id)}><strong>{card.title}</strong><span>{card.desc}</span></button>)}</section>{panel === 'cauta' && <SearchPanel trips={trips} myReservations={myReservations} onReserveTrip={onReserveTrip} onCancelReservation={onCancelReservation} />}{panel === 'publica' && <PublishPanel onPublishTrip={onPublishTrip} session={session} />}{panel === 'curier' && <CourierPanel trips={trips} myCourierReservations={myCourierReservations} onReserveCourier={onReserveCourier} onCancelReservation={onCancelReservation} />}</>;
@@ -34,7 +43,7 @@ function SearchPanel({ trips, myReservations, onReserveTrip, onCancelReservation
   const reserved = new Map(myReservations.map((r) => [r.tripId, r]));
   const filteredTrips = useMemo(() => {
     if (!filters.date) return [];
-    return trips.filter((t) => t.mode !== 'parcel-only' && tripDateValue(t) === filters.date && matchesRoute(t.route, filters.from, filters.to) && (t.status ? t.status === 'active' : true) && Number(t.seats) > 0);
+    return trips.filter((t) => t.mode !== 'parcel-only' && tripDateValue(t) === filters.date && applyLocationFilter(t.route, filters.from, filters.to) && (t.status ? t.status === 'active' : true) && Number(t.seats) > 0);
   }, [trips, filters]);
 
   const onSubmit = (e) => {
