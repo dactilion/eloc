@@ -1,21 +1,24 @@
 import React from 'react';
+import { user } from '../data';
+
 export default function ProfilePage() {
   return (
     <>
-      <header className="header"><h1>Profil</h1><p>Date utilizator și setări.</p></header>
+      <header className="header"><h1>Profil</h1><p>Informații cont și acțiuni rapide.</p></header>
       <section className="card">
         <div className="profile">
-          <img
-            className="avatar"
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&q=80&auto=format&fit=crop"
-            alt="Profil"
-          />
+          <img className="avatar" src={user.avatar} alt="Profil" />
           <div>
-            <h2>Andrei</h2>
-            <p className="meta">Rating: 4.9 ★</p>
-            <p className="meta">Telefon verificat: Da</p>
-            <p className="meta">Email: andrei@eloc.ro</p>
+            <h2>{user.name}</h2>
+            <p className="meta">Rating: {user.rating} ★</p>
+            <p className="meta">Telefon verificat: {user.phoneVerified ? 'Da' : 'Nu'}</p>
+            <p className="meta">Email: {user.email}</p>
           </div>
+        </div>
+        <div className="action-row">
+          <button className="btn subtle-btn">Editează profil</button>
+          <button className="btn subtle-btn">Setări</button>
+          <button className="btn">Logout</button>
         </div>
       </section>
     </>
