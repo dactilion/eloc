@@ -1,9 +1,6 @@
 import React from 'react';
 
-export default function MyTripsPage({ myTrips, onDeleteTrip }) {
-  return <><header className="header"><h1>Cursele mele</h1><p>Toate cursele publicate de tine.</p></header><TripSection title="Ca șofer" rows={myTrips.driver} type="driver" onDeleteTrip={onDeleteTrip} /><TripSection title="Ca pasager" rows={myTrips.passenger} type="passenger" /><TripSection title="Curier / colete" rows={myTrips.courier} type="courier" /></>;
-}
-
-function TripSection({ title, rows, type, onDeleteTrip }) {
-  return <section className="card"><h2>{title}</h2>{rows.length ? <div className="list">{rows.map((r) => <article className="card trip-card" key={r.id}><h3>{r.route}</h3><p className="meta">{r.when}</p><p className="meta">{type === 'driver' ? `Locuri: ${r.seats} • Preț: ${r.price} • Status: ${r.status}` : type === 'passenger' ? `Preț: ${r.price}` : `Status: ${r.status}`}</p>{type === 'driver' && <button className="btn subtle-btn" onClick={() => onDeleteTrip(r.id)}>Șterge cursa</button>}</article>)}</div> : <div className="empty">Nicio înregistrare.</div>}</section>;
+export default function MyTripsPage({ myDriverTrips, myReservations, trips, onDeleteTrip, onCancelReservation }) {
+  const reservedTrips = myReservations.map((r) => ({ ...r, trip: trips.find((t) => t.id === r.tripId) })).filter((x) => x.trip);
+  return <><header className="header"><h1>Cursele mele</h1><p>Curse publicate și rezervări.</p></header><section className="card"><h2>Ca șofer</h2>{myDriverTrips.length ? <div className="list">{myDriverTrips.map((r) => <article className="card trip-card" key={r.id}><h3>{r.route}</h3><p className="meta">{r.when}</p><p className="meta">Locuri: {r.seats} • Preț: {r.price} • Status: {r.seats <= 0 ? 'Cursă plină' : 'Activă'}</p><button className="btn subtle-btn" onClick={() => onDeleteTrip(r.id)}>Șterge cursa</button></article>)}</div> : <div className="empty">Nicio cursă publicată.</div>}</section><section className="card"><h2>Rezervările mele (pasager)</h2>{reservedTrips.length ? <div className="list">{reservedTrips.map(({ trip, passengers }) => <article className="card trip-card" key={trip.id}><h3>{trip.route}</h3><p className="meta">{trip.when}</p><p className="meta">Rezervat pentru: {passengers} persoană • Preț: {trip.price}</p><button className="btn subtle-btn" onClick={() => onCancelReservation(trip.id)}>Anulează rezervarea</button></article>)}</div> : <div className="empty">Nu ai rezervări active.</div>}</section></>;
 }

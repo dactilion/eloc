@@ -1,7 +1,8 @@
 export const KEYS = {
   users: 'eloc_users',
   session: 'eloc_session',
-  trips: 'eloc_trips'
+  trips: 'eloc_trips',
+  reservations: 'eloc_reservations'
 };
 
 const read = (key, fallback) => {
@@ -24,3 +25,6 @@ export const clearSession = () => localStorage.removeItem(KEYS.session);
 
 export const getTrips = () => read(KEYS.trips, []);
 export const saveTrips = (trips) => write(KEYS.trips, trips);
+
+export const getReservations = () => read(KEYS.reservations, []);
+export const saveReservations = (reservations) => write(KEYS.reservations, reservations);
