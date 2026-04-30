@@ -40,6 +40,11 @@ export default function App() {
   };
 
   const addTrip = (trip) => { const next = [trip, ...trips]; setTrips(next); saveTrips(next); };
+  const updateTrip = (tripId, updates) => {
+    const next = trips.map((t) => (t.id === tripId ? { ...t, ...updates } : t));
+    setTrips(next); saveTrips(next);
+  };
+
   const deleteTrip = (tripId) => {
     const nextTrips = trips.filter((t) => t.id !== tripId);
     const nextReservations = reservations.filter((r) => r.tripId !== tripId);
@@ -77,7 +82,7 @@ export default function App() {
     <div id="app">
       <Routes>
         <Route path="/" element={<HomePage trips={trips} myReservations={myReservations} session={session} onPublishTrip={addTrip} onReserveTrip={reserveTrip} onCancelReservation={cancelReservation} />} />
-        <Route path="/cursele-mele" element={<MyTripsPage myDriverTrips={myDriverTrips} myReservations={myReservations} trips={trips} onDeleteTrip={deleteTrip} onCancelReservation={cancelReservation} />} />
+        <Route path="/cursele-mele" element={<MyTripsPage myDriverTrips={myDriverTrips} myReservations={myReservations} trips={trips} onDeleteTrip={deleteTrip} onCancelReservation={cancelReservation} onUpdateTrip={updateTrip} />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/profil" element={<ProfilePage session={session} onLogout={() => { clearSession(); setSession(null); }} />} />
         <Route path="*" element={<Navigate to="/" replace />} />

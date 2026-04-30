@@ -162,3 +162,6 @@ input:focus, select:focus { outline: 2px solid #d5e0ff; border-color: var(--prim
   .form-grid .full { grid-column: 1 / -1; }
   .bottom-nav { left: 50%; transform: translateX(-50%); max-width: 880px; border-radius: 14px 14px 0 0; }
 }
+
+.reserve-btn { background: #17976b; }
+.reserve-btn:hover { filter: brightness(0.96); }
