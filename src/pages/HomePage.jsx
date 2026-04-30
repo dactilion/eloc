@@ -25,7 +25,7 @@ function SearchPanel({ trips, myReservations, onReserveTrip, onCancelReservation
   const reserved = new Map(myReservations.map((r) => [r.tripId, r]));
   const filteredTrips = useMemo(() => {
     if (!filters.date) return [];
-    return trips.filter((t) => t.mode !== 'parcel-only' && (t.date || '') === filters.date && (!filters.from || t.route.toLowerCase().startsWith(filters.from.toLowerCase())) && (!filters.to || t.route.toLowerCase().endsWith(filters.to.toLowerCase())));
+    return trips.filter((t) => { const [fromCity = '', toCity = ''] = String(t.route || '').split('→').map((x) => x.trim().toLowerCase()); return t.mode !== 'parcel-only' && (t.date || '') === filters.date && (!filters.from || fromCity.includes(String(filters.from).toLowerCase())) && (!filters.to || toCity.includes(String(filters.to).toLowerCase())); });
   }, [trips, filters]);
 
   const onSubmit = (e) => {
@@ -43,7 +43,7 @@ function CourierPanel({ trips, myCourierReservations, onReserveCourier, onCancel
   const [filters, setFilters] = useState({ from: '', to: '', date: '' });
   const courierTrips = useMemo(() => {
     if (!filters.date) return [];
-    return trips.filter((t) => (t.mode === 'parcel-only' || t.mode === 'mixed') && !!t.parcelSize && t.date === filters.date && (!filters.from || t.route.toLowerCase().startsWith(filters.from.toLowerCase())) && (!filters.to || t.route.toLowerCase().endsWith(filters.to.toLowerCase())));
+    return trips.filter((t) => { const [fromCity = '', toCity = ''] = String(t.route || '').split('→').map((x) => x.trim().toLowerCase()); return (t.mode === 'parcel-only' || t.mode === 'mixed') && !!t.parcelSize && (t.date || '') === filters.date && (!filters.from || fromCity.includes(String(filters.from).toLowerCase())) && (!filters.to || toCity.includes(String(filters.to).toLowerCase())); });
   }, [trips, filters]);
 
   const onSubmit = (e) => {
@@ -64,7 +64,7 @@ function PublishPanel({ onPublishTrip, session }) {
 }
 
 function TripsList({ trips, reservedMap, onReserveTrip, onReserveCourier, onCancelReservation, hidePassengerActions = false, selectedDate }) {
-  if (selectedDate && !trips.length) return <div className="empty">Nu există curse disponibile pentru data selectată.</div>;
+  if (selectedDate && !trips.length) return <div className="empty">Nu există curse disponibile pentru criteriile selectate.</div>;
   if (!selectedDate && !trips.length) return <div className="empty">Nu există curse disponibile momentan.</div>;
 
   return (
@@ -78,7 +78,7 @@ function TripsList({ trips, reservedMap, onReserveTrip, onReserveCourier, onCanc
           <article key={t.id} className="card trip-card">
             <h3>{t.route}</h3>
             <div className="trip-meta"><span>Șofer: {t.driver}</span><span>Plecare: {t.time}</span></div>
-            <div className="trip-meta"><span>Preț: {t.price}</span><span>{full ? 'Cursă plină' : `Locuri: ${t.seats}`}</span></div>
+            <div className="trip-meta"><span>Preț: {t.price}</span>{!hidePassengerActions && <span>{full ? 'Cursă plină' : `Locuri: ${t.seats}`}</span>}</div>
             {(t.mode === 'parcel-only' || t.mode === 'mixed') && !!t.parcelSize && <p className="meta">📦 {t.parcelSize}</p>}
 
             <div className="action-row">
